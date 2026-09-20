@@ -4,7 +4,7 @@
 **Author:** Varun Tripathi
 **Analysis Date:** August 8, 2026
 **Scope:** Product Strategy, User Journey, PRD & Metrics
-**Evidence Note:** All financial figures and metrics are based on publicly available data, estimates, and secondary reporting. See [Appendix](#23-appendix) for source grades and conflicts.
+**Evidence Note:** All figures are from publicly available data, estimates, and secondary reporting. See [Appendix](#23-appendix) for source grades and conflicts.
 
 ---
 
@@ -37,27 +37,23 @@
 
 ## 1. Executive Summary
 
-Stripe processed **$1.9 trillion in payment volume in 2025** (+34% YoY), powers over 5 million businesses, and was valued at **$159B** in February 2026. For fifteen years, Stripe's moat was switching cost: once wired into a codebase, replacing it meant a quarter of engineering time nobody wanted to spend.
+Stripe reports processing **$1.9 trillion in payment volume in 2025** (+34% YoY) and powering over 5 million businesses.
 
-**The strategic shift.** Stripe is now deliberately dismantling that moat. The Agentic Commerce Protocol was released under Apache 2.0. Shared Payment Tokens work for merchants who process with *someone else*. Tempo, a payments-native L1, was positioned as neutral infrastructure. None of these lock anyone in. The logic: if an AI agent transacts on a buyer's behalf, there is no checkout page to integrate against, and an integration moat protects nothing. Better to own the rails than the SDK.
+**The problem.** Stripe's shift toward open protocols (Agentic Commerce Protocol under Apache 2.0, Shared Payment Tokens, Tempo) may reduce the switching-cost advantage that historically came from deep integration. If retention increasingly depends on trust and product preference rather than codebase inertia, the merchant experience during risk enforcement becomes strategically important. Public complaints suggest that risk reviews surface as sudden, opaque events with limited merchant visibility into status or remediation steps.
 
-**The problem.** A protocol moat has no switching cost by construction. You keep customers only by being cheaper, better, or more trusted. From an outside-in perspective, trust appears to be Stripe's weakest surface: merchant complaints about frozen funds, opaque risk decisions, and slow support are consistently reported across public channels.
+**Outside-in hypothesis.** The merchant-facing experience does not sufficiently translate risk-related signals into continuous, actionable guidance. Merchants report limited visibility into review status, requirements, and resolution progress.
 
-**The timing problem.** Stripe's February 2026 annual letter presented agentic commerce as a live, arriving shift. Ten days later, OpenAI retired Instant Checkout after fewer than ~15 Shopify merchants ever shipped against it. Stripe is spending a defensible position to buy a category that has not yet proven it converts.
+**Proposed product.** "Merchant Account Standing" — a persistent, visible account-status experience that provides actionable guidance during and before risk events, replacing surprise with agency. The MVP focuses on standing visibility, review transparency, and remediation guidance. Proactive warnings based on validated signals are a Phase 2 extension.
 
-**Root cause (hypothesis).** From a product perspective, Stripe does not appear to expose a merchant-facing account-standing object that translates internal risk signals into actionable status. Risk enforcement surfaces as a sudden binary event despite being measured as a continuous gradient internally.
-
-**Proposed solution.** "Stripe Standing" — a continuous, transparent account-standing layer that warns merchants when risk factors are elevating and provides actionable remediation steps *before* enforcement occurs. This replaces surprise with agency.
-
-**Measurement.** North star: Retained Volume Share per Active Business — the percentage of a merchant's total payment volume processed through Stripe. Supporting: self-remediation rate, support contacts per risk event, first-time-correct document submission rate.
+**Measurement.** Primary metric: Post-Risk-Event Retention Rate — the percentage of merchants experiencing a risk review who remain active on Stripe after 90 days.
 
 ---
 
 ## 2. Context
 
-Stripe was founded in 2010 by Patrick and John Collison. The original insight: accepting a card online required weeks of negotiation, and Stripe replaced this with a programmable API and flat pricing (2.9% + 30¢). Over 15 years, Stripe expanded from an API into a financial services suite serving solo founders, platform marketplaces (via Connect), and enterprises.
+Stripe was founded in 2010 by Patrick and John Collison. The original insight: accepting a card online required weeks of negotiation, and Stripe replaced this with a programmable API and flat pricing. Over 15 years, Stripe expanded from a payments API into a financial services suite serving solo founders, platform marketplaces, and enterprises.
 
-**Why this matters now:** Stripe's original moat — developer switching cost — is being deliberately replaced by open protocols. As switching costs decline, Stripe must compete on preference and trust, putting pressure on its weakest surface: risk enforcement and account holds.
+**Why this matters now:** Stripe's recent moves toward open protocols could reduce the integration-based switching costs that historically retained merchants. This may shift retention pressure toward trust, performance, and product preference.
 
 ---
 
@@ -67,14 +63,14 @@ Four product areas are relevant to this study:
 
 | Layer | What it does | Key products |
 |---|---|---|
-| **Payments** | Accept money online and in person, 125+ payment methods | Payments, Checkout, Elements, Terminal |
-| **Platforms** | Let other companies embed payments for *their* users | Connect, Issuing |
+| **Payments** | Accept money online and in person | Payments, Checkout, Elements, Terminal |
+| **Platforms** | Let other companies embed payments for their users | Connect, Issuing |
 | **Risk & Fraud** | Automated fraud detection and risk decisioning | Radar, Identity |
 | **Money management** | Hold, move and pay out funds | Treasury, Payouts, Capital |
 
 **Connect** is strategically critical: it converts Stripe from merchant-by-merchant sales into a distribution business. When Stripe flags a Connect sub-merchant, the *platform* absorbs the support ticket.
 
-**Radar** is relevant because it powers the automated risk decisions that trigger account holds — the core problem this study investigates.
+**Radar** is relevant because it powers the automated risk decisions that can trigger account holds — the core experience this study investigates.
 
 ---
 
@@ -82,11 +78,11 @@ Four product areas are relevant to this study:
 
 Stripe originally solved an access problem: developers couldn't accept payments without weeks of setup. That problem is solved.
 
-**First shift — access to performance.** For mature businesses, the question is now "am I accepting *enough* payments, at the lowest cost, in every market?" Authorization rates, local acquiring, and interchange economics are the battleground — areas where Stripe's aggregator model faces structural disadvantage against direct acquirers like Adyen.
+**The shift.** My interpretation is that Stripe's move toward open protocols — the Agentic Commerce Protocol (Apache 2.0), Shared Payment Tokens that work with non-Stripe processors, and Tempo as neutral infrastructure — could reduce the switching-cost advantage that historically came from deep integration. Open protocols can reduce the switching costs created by proprietary integrations, potentially shifting retention pressure toward trust, performance, and product preference.
 
-**Second shift — integration to intermediation.** If an AI agent completes purchases, the merchant's checkout page stops being where commerce happens. Stripe's response: define the protocol for the new surface rather than defend the old one.
+**The timing question.** Stripe's February 2026 annual letter presented agentic commerce as a live, arriving shift. Ten days later, OpenAI retired Instant Checkout after fewer than ~15 Shopify merchants ever shipped against it. The protocol survived; the product did not.
 
-**The problem this study focuses on:** Stripe is converting a switching-cost business into a preference business. In a preference business, trust is the retention mechanism, and trust is measured at the worst moment, not the average one. For many merchants, the worst moment is an unexplained hold on their money. That is the problem investigated here, and it drives the proposal in [§14](#14-feature-proposal).
+**This study's focus:** If trust becomes a more important retention factor, then the merchant experience at its worst moment — an unexplained risk hold — deserves product attention. That is the problem investigated here.
 
 ---
 
@@ -94,45 +90,57 @@ Stripe originally solved an access problem: developers couldn't accept payments 
 
 **Persona 1: The Solo Founder / Fast-Growing Startup**
 - Needs revenue to keep flowing without interruption.
-- Sudden growth triggers automated risk reviews. Lacks resources to survive a multi-week payout freeze.
+- Sudden growth can trigger automated risk reviews. May lack resources to survive a multi-week payout freeze.
 
 **Persona 2: The Connect Platform Lead**
 - Owns payments for a marketplace or vertical SaaS.
-- When Stripe freezes a sub-merchant, the platform absorbs the support ticket and the blame.
+- When Stripe flags a sub-merchant, the platform absorbs the support ticket and the blame.
 
 **Persona 3: The Enterprise VP Finance**
 - Manages high-volume global processing.
-- Has the leverage to add a second processor if Stripe's risk operations underperform.
+- Has the leverage to add a second processor if risk operations underperform.
 
 ---
 
 ## 6. Market & Competitive Context
 
-Stripe holds an estimated 21–29% of payment processing market share (methodology-dependent; see [§23](#23-appendix)). The competitive dynamics relevant to this study:
+The competitive dynamics relevant to this study:
 
-**Adyen as the enterprise alternative.** Adyen holds direct acquiring licenses in major markets, reportedly yielding a 2–5pp authorization-rate advantage in Europe (estimate; weakly sourced — see [§23](#23-appendix)). For enterprise merchants, this creates a credible reason to split volume.
+**Alternative processors exist.** Adyen and other direct acquirers provide a credible alternative for merchants who lose trust in Stripe's risk operations. Merchants with sufficient volume can split processing across multiple providers.
 
-**The partial-defection pattern.** A merchant who survives a hold often stays on Stripe but quietly routes a portion of volume to a secondary processor. This defection is invisible in gross churn metrics but real in revenue share.
+**Plausible partial defection.** A plausible downstream consequence of a disruptive risk event is partial volume defection: a merchant may add a secondary processor to hedge against future interruptions. Public evidence suggests this behavior is possible, but its prevalence is not publicly measurable.
 
-**Open protocols reduce lock-in.** The Agentic Commerce Protocol (Apache 2.0), Shared Payment Tokens, and Tempo collectively reduce Stripe's integration moat. Without switching cost, the cost of leaving after a bad trust experience drops significantly.
+**Open protocols may reduce lock-in.** The Agentic Commerce Protocol, Shared Payment Tokens, and Tempo collectively may reduce integration-based switching costs. If so, the cost of leaving after a bad trust experience drops.
 
-**Net effect:** Stripe's competitive position increasingly depends on merchant trust and satisfaction, not codebase inertia.
+**Net effect:** Stripe's competitive position may increasingly depend on merchant trust and satisfaction, not only codebase inertia.
 
 ---
 
 ## 7. Evidence / Research
 
-**Evidence 1 — Problem signal (public complaints)**
-Secondary reporting aggregators show hundreds of risk-related complaints focused on held funds and unexpected suspensions (estimate: ~540 in trailing 12 months via BBB; graded Low). Public complaints provide evidence that this failure mode exists, but they cannot establish prevalence against a base of 5M+ businesses. The argument rests on severity and strategic timing, not frequency.
+**Evidence 1 — Problem signal**
+*Source:* Secondary reporting aggregators (BBB and review platforms).
+*What it says:* Risk-related complaints focus on held funds, unexpected suspensions, and limited communication.
+*Insight:* This failure mode exists and is severe for affected merchants. However, public complaints cannot establish prevalence against a base of 5M+ businesses.
+*Product implication:* The severity of individual cases, not their frequency, is what makes this worth addressing — especially if trust is becoming a more important retention factor.
 
-**Evidence 2 — User pain (information asymmetry)**
-Stripe's Terms of Service permit holds of up to 120 days (first-party, verifiable). Anecdotal reports frequently cite 2–4 week resolution times with generic templated communications. The merchant receives no advance warning and no visibility into review status or specific requirements.
+**Evidence 2 — Information asymmetry**
+*Source:* Stripe's Terms of Service (first-party, verifiable).
+*What it says:* Stripe's terms permit holds of up to 120 days. Merchants report receiving generic templated communications during reviews.
+*Insight:* Merchants under review appear to have limited visibility into status, requirements, and timeline.
+*Product implication:* Transparency during review is a product gap that could be addressed without changing enforcement logic.
 
-**Evidence 3 — Business impact (volume defection)**
-Merchants who survive a hold often add a backup processor to hedge risk. This partial defection is inferred from complaint patterns and competitive dynamics — it has not been independently measured. If real, it means Stripe's risk enforcement generates a retention cost that doesn't appear in churn metrics.
+**Evidence 3 — Strategic context**
+*Source:* Stripe's 2025 annual letter, ACP release, OpenAI partnership.
+*What it says:* Stripe is building open, non-proprietary protocol positions.
+*Insight:* This may reduce integration-based switching costs over time.
+*Product implication:* If switching costs decline, the cost of a bad trust experience increases. Fixing the trust surface becomes more strategically urgent.
 
-**Evidence 4 — Strategic relevance**
-As Stripe moves to open protocols, merchants can split volume with lower friction than before. The combination of reduced switching cost and a trust-damaging enforcement experience creates a compounding retention risk at precisely the moment Stripe's strategy depends on preference-based retention.
+**Evidence 4 — Timing**
+*Source:* Forbes, trade press (March 2026).
+*What it says:* OpenAI retired Instant Checkout after fewer than ~15 merchants shipped against it.
+*Insight:* The agentic commerce market is unproven. Stripe may be spending a defensible position to enter a category that has not yet converted.
+*Product implication:* The case for trust-based retention does not depend on agentic commerce succeeding — it holds as long as switching costs decline for any reason.
 
 ---
 
@@ -142,10 +150,10 @@ As Stripe moves to open protocols, merchants can split volume with lower frictio
 |---|---|---|---|
 | **Integration** | Ships API in an afternoon | Delighted | Stripe's strongest surface |
 | **First Payment** | Receives money | Peak trust | — |
-| **Growth Spurt** | Volume spikes | Elated | Silent risk accumulation begins. User is unaware. |
+| **Growth Spurt** | Volume spikes | Elated | Risk-related signals may begin accumulating. User is unaware. |
 | **Enforcement** | Payouts paused by automated flag | Panic | Trust event. Generic templated email. |
-| **Scramble** | Uploads documents, searches forums | Despair | High information asymmetry. Support queue takes days. |
-| **Resolution** | Funds released after weeks | Wary | Permanent damage. User integrates a second processor. |
+| **Scramble** | Uploads documents, searches forums | Despair | Limited visibility into status. Support queue takes days. |
+| **Resolution** | Funds released after weeks | Wary | Permanent trust damage. Merchant may consider a second processor. |
 
 ---
 
@@ -153,33 +161,34 @@ As Stripe moves to open protocols, merchants can split volume with lower frictio
 
 Four core friction points, each connected to evidence:
 
-1. **Zero advance warning.** Risk appears to be measured as a continuous gradient internally but is communicated to the merchant as a sudden binary cliff. (Supports: Evidence 2)
-2. **Information black hole.** Merchants under review cannot see their status, estimated resolution time, or exact document requirements. (Supports: Evidence 2)
-3. **Connect blindspot.** Platforms are the last to know when sub-merchants are flagged, absorbing support tickets they cannot resolve. (Supports: Evidence 3)
-4. **Actionless alerts.** Templated enforcement emails do not provide concrete, actionable remediation steps. (Supports: Evidence 1, 2)
+1. **No advance visibility.** Risk-related signals appear to be acted on internally but are not communicated to the merchant until enforcement occurs. (Evidence 2)
+2. **Information gap during review.** Merchants under review report limited visibility into status, estimated resolution time, or exact document requirements. (Evidence 2)
+3. **Connect blindspot.** Platforms are the last to know when sub-merchants are flagged, absorbing support tickets they cannot resolve. (Evidence 1)
+4. **Non-actionable communications.** Templated enforcement emails do not appear to provide concrete, actionable remediation steps. (Evidence 1, 2)
 
 ---
 
 ## 10. Root Cause
 
-**Outside-in root-cause hypothesis.**
+### Outside-in Root-Cause Hypothesis
 
-The product appears to expose risk primarily at the enforcement/review stage, rather than continuously translating risk-related signals into actionable merchant guidance. From a product perspective, Stripe does not appear to offer merchants a visible "account standing" object that shows their risk trajectory, current status, or specific remediation steps.
+**Observed:** Risk enforcement becomes highly visible to merchants at the point of review or hold.
 
-Every downstream cost — panic, wrong documents, support tickets, partial defection — flows from this single point of information asymmetry.
+**Observed:** Merchants report limited visibility into status, requirements, and resolution progress during and before enforcement.
 
-**Caveat:** If such an object exists internally and is simply not exposed to merchants, the diagnosis is still correct from the merchant's perspective but wrong about the technical cause.
+**Hypothesis:** The merchant-facing experience does not sufficiently translate risk-related signals into continuous, actionable guidance. The gap between internal risk awareness and merchant-facing communication creates information asymmetry that drives panic, incorrect document submissions, support load, and potential trust damage.
+
+**Caveat:** This hypothesis is based on publicly observable product behavior and merchant reports. I do not have access to Stripe's internal systems, data models, or risk architecture. If Stripe already provides more transparency than is publicly visible, this diagnosis may overstate the gap.
 
 ---
 
 ## 11. Opportunity
 
-| Opportunity | User value | Business value | Feasibility | Verdict |
-|---|---|---|---|---|
-| **Account-standing transparency with pre-emptive remediation** | High — eliminates surprise | High — protects retained volume | Medium — builds on publicly documented capabilities | **Selected** |
-| Interchange-plus pricing tier | High — cost clarity | High — enterprise retention | Medium — commercially sensitive | Strong candidate; separate initiative |
-| Expanded direct acquiring licenses | High — authorization rates | High — competitive parity | Low — multi-year, capital-intensive | Already underway in some markets |
-| Support-tier restructuring | Medium — faster resolution | Medium — reduces contacts | Medium | Treats a symptom of the same root cause |
+| Opportunity | User value | Business value | Feasibility |
+|---|---|---|---|
+| **Merchant Account Standing with actionable guidance** | High — reduces surprise, provides agency | High — may protect retention | Medium |
+| Improved support speed and escalation | Medium — faster resolution | Medium — higher ongoing cost | Medium |
+| Review transparency (status and requirements only) | Medium — reduces anxiety during review | Medium | High |
 
 ---
 
@@ -187,92 +196,84 @@ Every downstream cost — panic, wrong documents, support tickets, partial defec
 
 | Option | Description | Verdict |
 |---|---|---|
-| **1. Faster human support** | More staff, faster resolution times | Reactive. Does not prevent the initial panic. High ongoing cost. |
-| **2. Improve transparency during review** | Show review status, clock, document requirements | Partial fix. Helps merchants under review but does not prevent holds. |
-| **3. Pre-emptive standing + remediation (Selected)** | Expose risk trajectory continuously, warn before enforcement, provide actionable steps | Addresses root cause. Prevents holds for self-remediable cases. |
-
-Option 3 subsumes Option 2 and is evaluated in [§13](#13-prioritization).
+| **1. Faster human support** | Increase support capacity and escalation speed | Reactive. Does not prevent initial panic. High ongoing cost. |
+| **2. Review transparency** | Show status, required actions, and progress during an existing review | Partial fix. Helps merchants under review but does not provide standing visibility before enforcement. |
+| **3. Merchant Account Standing (Selected)** | Provide continuous account status plus actionable guidance. Proactive warnings added only after validation in Phase 2. | Extends Option 2 from a reactive review experience into a persistent merchant experience, while keeping the highest-risk predictive features out of the MVP. |
 
 ---
 
 ## 13. Prioritization
 
-**RICE scoring (author estimates for prioritization — not company-internal data):**
+**RICE scoring — author estimates for prioritization, not Stripe internal data:**
 
 | Factor | Score | Rationale |
 |---|---|---|
-| **Reach** | 8 / 10 | Every business gains a standing surface; the pre-emptive path reaches those approaching a threshold |
-| **Impact** | 4 / 5 | Attacks the largest cluster of merchant pain and the retention mechanism Stripe's strategy now depends on |
-| **Confidence** | 70% | Pattern is precedented (credit bureaus, cloud quota systems), but the anti-gaming constraint and predictive-lead-time question reduce confidence |
-| **Effort** | 12 person-months (estimate) | Standing entity, factor disclosure, notification events, remediation workflows, Connect variant |
-| **RICE Score** | **(8 × 4 × 0.70) ÷ 12 = 1.87** | |
+| **Reach** | 8 / 10 | Every business gains a standing surface; the review experience reaches all merchants experiencing enforcement |
+| **Impact** | 4 / 5 | Addresses the largest cluster of reported merchant pain; may protect post-risk-event retention |
+| **Confidence** | 65% | Review transparency is well-precedented; proactive signals are uncertain (moved to Phase 2) |
+| **Effort** | 10 person-months (estimate) | Standing experience, review tracker, notifications, remediation guidance, Connect variant |
+| **RICE Score** | **(8 × 4 × 0.65) ÷ 10 = 2.08** | |
 
-At pessimistic inputs (Reach 6, Impact 3, Confidence 55%, Effort 18), the score falls to **0.55** — below a typical prioritization bar. The argument for building it is strategic: if switching cost is being deliberately reduced, trust becomes the load-bearing retention mechanism, and RICE systematically under-scores investments whose benefit is a defection that doesn't happen.
+For prioritization, I assume the effort estimate is roughly correct for a team familiar with Stripe's stack. The confidence is held below 70% because the downstream retention impact is not publicly measurable. The score supports prioritization, but the strategic argument — that trust-based retention matters more as switching costs decline — is what makes the case.
 
 ---
 
 ## 14. Feature Proposal
 
-### Stripe Standing
+### Merchant Account Standing
 
 **What the merchant experiences today:**
-Risk enforcement arrives as a sudden event — payouts paused, a generic email, no visibility into status or requirements, no advance warning. The merchant scrambles, uploads wrong documents, waits days for support.
+Risk enforcement arrives as a sudden event — payouts paused, a generic email, no visibility into status or requirements. The merchant scrambles, may upload wrong documents, and waits days for support.
 
 **What changes:**
-A continuous, visible account-standing surface that translates risk signals into actionable merchant guidance, replacing binary enforcement with a gradient the merchant can see and act on.
+A persistent, visible account-status experience that provides actionable guidance during and before risk events. The merchant can see their current standing, understand what's needed, and take action.
 
-**Core components:**
+**Core components (MVP):**
 
-1. **Account standing indicator** — a persistent element on the dashboard showing current standing (Good / Attention / Review / Restricted). In "Good" standing, it is visually quiet.
-2. **Actionable risk signals** — when factors elevate, the merchant sees which factor, the threshold, and 2–3 specific remediation actions. Only non-gameable factors are disclosed (subject to risk team veto).
-3. **Review status tracker** — for merchants under review: a stage tracker (Received → Under Review → Awaiting Documents → Resolved) with a clock and specific document requirements.
-4. **Remediation guidance** — concrete steps to lower elevated factors before enforcement occurs.
-5. **Notifications** — pre-emptive email/dashboard warnings when risk trajectory trends toward a threshold, plus webhook events for programmatic integration.
+1. **Persistent account standing** — a dashboard element showing current status: Good / Attention / Under Review / Action Required. In "Good" standing, visually quiet.
+2. **Review-status tracker** — for merchants under review: stage tracker (Received → Under Review → Awaiting Documents → Resolved) with estimated timeline.
+3. **Clear outstanding requirements** — specific document requirements and accepted formats, replacing generic templated emails.
+4. **Actionable remediation guidance** — concrete steps the merchant can take to address elevated signals (e.g., dispute rate), limited to safe, non-gameable categories.
+5. **Contextual notifications** — email/dashboard alerts when standing changes or action is needed, plus webhook events for programmatic integration.
 
-**MVP scope:**
-- Persistent standing indicator with four states.
-- Factor disclosure for non-gameable signals only.
-- Review status tracker with clock, stage, and document checklist.
-- Pre-emptive warnings for highest-confidence trajectory signals.
+**Phase 2 extension (after validation):**
+- Proactive warnings based on validated signals, added only after Phase 1 demonstrates no increase in fraud or evasion.
 
-**Out of scope:**
-- Full model explainability or raw risk scores.
-- Changing actual risk thresholds or enforcement logic.
-- Consumer-facing features.
-- Automated policy changes based on standing.
+**The experience must NOT expose:**
+- Raw risk scores or exact model weights.
+- Sensitive detection rules or precise fraud thresholds.
+- Information that could materially improve fraud or policy evasion.
+
+All disclosed signals are subject to risk team veto.
 
 ---
 
 ## 15. PRD
 
-**Objective:** Eliminate surprise from risk enforcement to protect retained volume share and reduce support load.
+**Objective:** Reduce the customer impact of risk reviews by providing standing visibility, review transparency, and actionable guidance.
 
 **Target user:** Fast-growing merchants and Connect platform operators.
 
-**Problem:** Risk enforcement surfaces as a sudden, unexplained seizure of cash, leading to permanent loss of volume share through partial defection.
+**Problem:** Risk enforcement surfaces as a sudden, opaque event, leading to merchant panic, incorrect submissions, support load, and potential trust damage.
 
 **User stories:**
-- As a fast-growing founder, I want advance warning when I'm approaching a risk threshold so I can fix it before my payouts freeze.
+- As a fast-growing founder, I want to see my account standing so I understand where I stand before any enforcement occurs.
 - As a merchant under review, I want to see exactly what documents are needed and an estimated timeline.
 - As a Connect platform lead, I want portfolio visibility into my sub-merchants' standing so I can proactively assist them.
 
 **Functional requirements:**
-- **FR-1:** `Account Standing` object with states: Good, Attention, Review, Restricted.
-- **FR-2:** Factor disclosure UI showing elevated signals, thresholds, and trends.
-- **FR-3:** Review status tracker with elapsed time and outstanding requirements.
-- **FR-4:** Pre-emptive email/dashboard warnings with guided remediation.
+- **FR-1:** Merchant-facing Account Standing experience with four states: Good, Attention, Under Review, Action Required.
+- **FR-2:** Review-status tracker showing stage, elapsed time, and outstanding requirements.
+- **FR-3:** Actionable remediation guidance for elevated signals (non-gameable categories only).
+- **FR-4:** Contextual notifications (email, dashboard, webhook) on standing changes.
 - **FR-5:** Connect API endpoint and dashboard view for sub-merchant standing.
+- **FR-6:** The experience must avoid exposing information that could materially improve fraud or policy evasion.
 
 **Success metrics:** See [§17](#17-metrics--measurement).
 
-**Guardrails:**
-- Fraud loss rate must not degrade.
-- Disclosed factors must pass risk team veto to prevent gaming.
-- Standing state must update within 15 minutes of an internal risk score change.
+**Guardrails:** Fraud loss rate must not degrade. All disclosed signals subject to risk team veto.
 
-**Risks:** See [§20](#20-risks--mitigation).
-
-**Out of scope:** Full model explainability, enforcement logic changes, consumer-facing features.
+**Out of scope:** Full model explainability, raw risk scores, enforcement logic changes, consumer-facing features, proactive warnings (Phase 2).
 
 ---
 
@@ -280,73 +281,71 @@ A continuous, visible account-standing surface that translates risk signals into
 
 *(Text-described. No image assets generated.)*
 
-**Screen 1: Dashboard Standing Indicator**
-- A compact card adjacent to the balance summary. In "Good" standing, visually quiet. If "Attention Needed," turns yellow with a one-line summary.
-- *Problem solved:* Normalizes risk standing as a continuous metric rather than a sudden binary event.
+**Screen 1: Account Standing Dashboard**
+- A compact card adjacent to the balance summary. In "Good" standing, visually quiet and unobtrusive. If "Attention" or "Action Required," it surfaces with a one-line summary and a link to details.
+- *Problem solved:* Normalizes account status as a continuous, visible state rather than a sudden binary event.
 
 **Screen 2: Standing Detail & Remediation**
-- A factor table showing specific elevated metrics (e.g., dispute rate), the category threshold, a trend sparkline, and 2–3 specific remediation actions.
-- *Problem solved:* Replaces the information black hole with concrete levers the user can pull before enforcement.
+- Shows elevated signals (e.g., dispute rate category, not raw score), along with 2–3 specific remediation actions. Only safe, non-gameable categories are disclosed.
+- *Problem solved:* Replaces the information gap with concrete actions the merchant can take.
 
 **Screen 3: Active Review Tracker**
-- A stage tracker (Received → Under Review → Awaiting Documents → Resolved) with a clear checklist of accepted document formats and an estimated timeline.
+- A stage tracker (Received → Under Review → Awaiting Documents → Resolved) with a clear document checklist and estimated timeline.
 - *Problem solved:* Reduces merchant panic and decreases incorrect document submissions.
 
 ---
 
 ## 17. Metrics & Measurement
 
-**North Star:** Retained Volume Share per Active Business (RVS) — the percentage of a business's total addressable payment volume processed through Stripe.
+**Primary metric:** Post-Risk-Event Retention Rate — the percentage of merchants experiencing a risk-related review or interruption who remain active and continue processing through Stripe after 90 days.
 
 **Supporting metrics:**
-1. **Self-remediation rate:** % of warned merchants who resolve risk factors without enforcement (target: ≥25%).
-2. **Support contacts per risk event:** (target: −40%).
-3. **First-time-correct document submission rate:** (target: ≥80%).
+1. **Self-remediation rate** — % of merchants who resolve elevated signals without enforcement (target: ≥25%).
+2. **Support contacts per risk event** — (target: −40%).
+3. **Median time to resolution** — time from review initiation to resolution.
+4. **Post-risk-event processing volume** — whether merchants maintain or reduce volume after a risk event.
 
 **Guardrails:**
 1. **Fraud loss rate** — must not degrade. Hard stop.
-2. **False-warning rate** — warned but never enforced (target: <20%).
+2. **False-warning rate** — standing changed to Attention but no enforcement followed (target: <20%).
 3. **Involuntary interruption rate** — % of businesses experiencing a payout pause.
 
 ---
 
 ## 18. Experiment / A-B Test
 
-**Hypothesis:** Merchants given continuous visibility into account standing and pre-emptive warnings will retain higher volume share post-risk-event and generate fewer support contacts.
+**Hypothesis:** Merchants given standing visibility, review transparency, and remediation guidance will retain at higher rates after risk events and generate fewer support contacts.
 
 **Variants:**
-- **A (Control):** Current experience — binary enforcement, templated emails.
-- **B (Full):** Full Stripe Standing — dashboard indicator, factor disclosure, pre-emptive warnings, review clock.
-- **C (Transparency-only):** Standing indicator + review clock only. No predictive warnings.
+- **Control:** Current experience — enforcement with templated emails.
+- **Treatment:** Merchant Account Standing — persistent status, review tracker, remediation guidance, contextual notifications.
 
-*Why Variant C?* The predictive engine is legally and technically expensive. If C achieves 80% of B's retention benefit, ship C.
+**Phase 2 experiment (separate, after validation):** Add proactive warnings to a validated subset of merchants.
 
-**Primary metric:** 90-day Retained Volume Share.
-**Secondary metrics:** Self-remediation rate, support contacts per risk event.
+**Primary metric:** Post-Risk-Event Retention Rate (90-day).
+**Secondary metrics:** Support contacts per risk event, median time to resolution, self-remediation rate.
 **Guardrails:** Fraud loss rate, false-warning rate.
 
-**Decision rule (6-month test):**
-1. If fraud loss rate degrades in B or C → STOP. Disclosed factors are too permissive.
-2. If B improves 90-day RVS by +10% over A → roll out B.
-3. If C matches B's retention improvements → roll out C to save engineering effort.
+**Decision rule:** Run until pre-defined sample size and statistical power are reached. If fraud loss rate degrades in Treatment → stop immediately. If Treatment improves 90-day retention rate significantly over Control → roll out. If results are inconclusive → extend test duration or refine the standing categories.
 
 ---
 
 ## 19. Rollout Plan
 
-**Phase 1 — Read-Only Beta (Weeks 1–6)**
-- Internal risk team vetoes gameable factors.
-- Ship read-only standing surface to 5% of merchants. No warnings.
-- Gate: verify no increase in fraud losses or evasion behavior.
+**Phase 1 — Read-Only Standing + Review Transparency (Weeks 1–6)**
+- Internal risk team vetoes gameable signals.
+- Ship standing indicator and review tracker to 5% of merchants.
+- Gate: no increase in fraud losses or evasion behavior.
 
-**Phase 2 — Review Experience & Limited Warnings (Weeks 7–14)**
+**Phase 2 — Remediation Guidance (Weeks 7–14)**
+- Enable actionable remediation steps for elevated signals.
 - Ship review tracker to all merchants under review.
-- Enable pre-emptive warnings for highest-confidence signals only (10% rollout).
-- Gate: median resolution time drops; self-remediation rate hits 20%.
+- Gate: self-remediation rate ≥20%; median resolution time decreases.
 
-**Phase 3 — General Availability (Weeks 15+)**
+**Phase 3 — General Availability + Connect (Weeks 15+)**
 - Roll out Connect portfolio view to platforms.
-- Enable for all merchants globally following adverse-action legal sign-off in US/EU/UK.
+- Enable for all merchants globally following legal sign-off in US/EU/UK.
+- Begin Phase 2 experiment for proactive warnings on a validated subset.
 
 ---
 
@@ -354,50 +353,41 @@ A continuous, visible account-standing surface that translates risk signals into
 
 | Risk | Impact | Mitigation |
 |---|---|---|
-| **Disclosed factors help bad actors evade detection** | Severe | Strict risk team veto on all exposed factors. Phase 1 read-only rollout designed to measure evasion before scaling. |
-| **Pre-emptive warnings classified as adverse-action notices** | High (compliance) | Upfront legal review in US/UK/EU. Fall back to Variant C (transparency-only) if blocked. |
-| **Risk trajectory not predictive enough (false alarms)** | Medium (trust) | Only trigger warnings on highest-confidence signals. False-warning guardrail <20%. |
-| **Standing surface increases baseline merchant anxiety** | Medium (adoption) | "Good" standing UI must be completely visually quiet. |
+| **Disclosed signals help bad actors evade detection** | Severe | Strict risk team veto on all exposed categories. Phase 1 read-only rollout designed to measure evasion before scaling. |
+| **Communications classified as adverse-action notices** | High (compliance) | Upfront legal review in US/UK/EU. If blocked, limit to review transparency only. |
+| **Standing categories are too coarse to be useful** | Medium (adoption) | Validate category granularity in Phase 1 with merchant feedback before expanding. |
+| **Standing surface increases baseline merchant anxiety** | Medium (trust) | "Good" standing UI must be completely visually quiet. Only surface when action is needed. |
 | **Connect platforms misuse standing data to drop sellers** | Low (operational) | Restrict platform actions to notifying/assisting the seller, not automated dropping. |
 
 ---
 
 ## 21. Conclusion / PM Takeaways
 
-Stripe is deliberately reducing its own switching costs by embracing open protocols. In a market where merchants can split volume across processors with lower friction than ever, retention shifts from codebase inertia to earned trust.
+Based on the available evidence, Merchant Account Standing is a testable product intervention for reducing the customer impact of risk reviews. The strongest case for it is not that it eliminates enforcement, but that it can make necessary enforcement more predictable, actionable, and recoverable.
 
-From an outside-in perspective, Stripe's weakest trust surface is risk enforcement: opaque, sudden, and information-asymmetric. The proposed "Stripe Standing" feature addresses this by making risk a visible gradient rather than a binary cliff, giving merchants the agency to self-remediate before enforcement occurs.
+The MVP — standing visibility, review transparency, and remediation guidance — is feasible without exposing sensitive detection logic and without changing enforcement decisions. The highest-risk component (proactive warnings) is deferred to Phase 2, making the initial investment lower-risk and independently valuable.
 
-The strongest version of this argument is also its most uncomfortable: RICE alone, at pessimistic assumptions, does not clear the bar. The case for building it is strategic — if trust is now the retention mechanism, and the worst trust moment is an unexplained hold, then fixing that moment is not a support improvement but a competitive necessity.
-
-The three-arm experiment design (full standing, transparency-only, control) ensures the investment is testable before full commitment. Even the minimum viable variant — transparency during review without predictive warnings — would represent a meaningful improvement over the current experience.
+The experiment is designed to validate the hypothesis before full commitment. Even if the results are modest, review transparency alone represents a meaningful improvement over the current experience.
 
 ---
 
 ## 22. References
 
-1. Stripe — [2025 annual letter and tender offer announcement](https://stripe.com/newsroom/news/stripe-2025-update) (24 Feb 2026)
+1. Stripe — [2025 annual letter and tender offer](https://stripe.com/newsroom/news/stripe-2025-update) (24 Feb 2026)
 2. Stripe — [2025 Annual Letter](https://stripe.com/annual-updates/2025)
 3. CNBC — [Stripe valued at $159 billion](https://www.cnbc.com/2026/02/24/stripe-value-stock-sale-tender-offer.html)
 4. Bloomberg — [Stripe Reaches $159 Billion Valuation](https://www.bloomberg.com/news/articles/2026-02-24/stripe-hits-159-billion-valuation-as-payment-volume-soars)
-5. TechCrunch — [Stripe's valuation soars 74% to $159 billion](https://techcrunch.com/2026/02/24/stripes-valuation-soars-74-to-159-billion/)
-6. Stripe — [Stripe powers Instant Checkout in ChatGPT](https://stripe.com/newsroom/news/stripe-openai-instant-checkout)
-7. OpenAI — [Instant Checkout and the Agentic Commerce Protocol](https://openai.com/index/buy-it-in-chatgpt/)
-8. Forbes — [Why OpenAI's Checkout Retreat Spells Trouble](https://www.forbes.com/sites/jasongoldberg/2026/03/10/why-openais-checkout-retreat-spells-trouble-for-its-commerce-strategy/) (10 Mar 2026)
-9. Forrester — [Agentic Payments In B2C Commerce](https://www.forrester.com/blogs/agentic-payments-in-b2c-commerce-where-we-are-now)
-10. Stripe — [Radar](https://stripe.com/radar)
-11. Stripe — [Managed Payments](https://stripe.com/managed-payments)
-12. Stripe — [Pricing](https://stripe.com/pricing)
-13. Stripe — [Documentation](https://docs.stripe.com/)
-14. Chargeflow — [Stripe Statistics 2026](https://www.chargeflow.io/blog/stripe-statistics)
-15. Chargeflow — [Stripe vs Adyen 2026](https://www.chargeflow.io/blog/stripe-vs-adyen)
-16. Red Stag Fulfillment — [Stripe Market Share 2026](https://redstagfulfillment.com/what-is-the-market-share-of-stripe/)
-17. Backlinko — [Stripe Revenue and Growth Statistics 2026](https://backlinko.com/stripe-users)
-18. Terms.law — [Stripe Account Holds FAQ 2026](https://terms.law/FAQ/payment-processors/stripe-holds-faq.html)
-19. Terms.law — [When Stripe Holds Your Money](https://terms.law/2025/03/03/when-stripe-holds-your-money-the-definitive-legal-guide-to-getting-your-funds-released/)
-20. Stripe — [Agentic commerce use case](https://stripe.com/use-cases/agentic-commerce)
-21. Crypto Briefing — [Stripe launches Tempo](https://cryptobriefing.com/stripe-launches-tempo-stablecoin-blockchain/)
-22. Stripe — [2024 update](https://stripe.com/newsroom/news/stripe-2024-update) (for prior-year comparison)
+5. Stripe — [Stripe powers Instant Checkout in ChatGPT](https://stripe.com/newsroom/news/stripe-openai-instant-checkout)
+6. OpenAI — [Instant Checkout and the Agentic Commerce Protocol](https://openai.com/index/buy-it-in-chatgpt/)
+7. Forbes — [Why OpenAI's Checkout Retreat Spells Trouble](https://www.forbes.com/sites/jasongoldberg/2026/03/10/why-openais-checkout-retreat-spells-trouble-for-its-commerce-strategy/) (10 Mar 2026)
+8. Forrester — [Agentic Payments In B2C Commerce](https://www.forrester.com/blogs/agentic-payments-in-b2c-commerce-where-we-are-now)
+9. Stripe — [Radar](https://stripe.com/radar)
+10. Stripe — [Pricing](https://stripe.com/pricing)
+11. Stripe — [Documentation](https://docs.stripe.com/)
+12. Chargeflow — [Stripe vs Adyen 2026](https://www.chargeflow.io/blog/stripe-vs-adyen)
+13. Terms.law — [Stripe Account Holds FAQ](https://terms.law/FAQ/payment-processors/stripe-holds-faq.html)
+14. Terms.law — [When Stripe Holds Your Money](https://terms.law/2025/03/03/when-stripe-holds-your-money-the-definitive-legal-guide-to-getting-your-funds-released/)
+15. Stripe — [Agentic commerce use case](https://stripe.com/use-cases/agentic-commerce)
 
 ---
 
@@ -405,39 +395,32 @@ The three-arm experiment design (full standing, transparency-only, control) ensu
 
 ### A. Evidence Grades
 
-| Grade | Meaning | Applied to |
+| Grade | Meaning | Examples |
 |---|---|---|
-| 🟢 **High** | Official Stripe disclosure or first-party announcement | TPV ($1.9T), business count (5M+), DJIA/Nasdaq coverage, Atlas share, pricing, ACP license terms, hold duration (ToS: up to 120 days) |
-| 🟡 **Medium** | Credible secondary reporting, or company-reported without independent verification | Radar performance figures, stablecoin volume (~$400B), Instant Checkout retirement details, Adyen comparison figures |
-| 🟠 **Low** | Third-party trackers and estimates | Revenue estimates, employee count, market share, take rate, authorization-rate deltas, complaint volumes |
+| 🟢 **High** | Official Stripe disclosure | TPV ($1.9T), business count (5M+), ACP license terms, hold duration (ToS: up to 120 days), pricing |
+| 🟡 **Medium** | Credible secondary reporting | Radar performance figures, Instant Checkout retirement, Adyen comparisons |
+| 🟠 **Low** | Third-party estimates | Revenue estimates, market share, complaint volumes, authorization-rate deltas |
 
 ### B. Key Source Conflicts
 
 | Data point | Conflict | Resolution |
 |---|---|---|
-| **Revenue** | ~$5.84B net vs ~$19.4B gross (estimates) | Definitional, not factual. Gross includes interchange passed through. Both reported; Adyen comparisons use net only. |
-| **Market share** | 21–29% depending on methodology | Range reported. Website-count and volume share measure different things. |
-| **Agentic commerce status** | Stripe letter (24 Feb) presented it as arriving; OpenAI retired Instant Checkout (4 Mar) | Timeline sequence, not factual conflict. Both reported with dates. |
+| **Agentic commerce** | Stripe letter (24 Feb) presented as arriving; OpenAI retired Instant Checkout (4 Mar) | Timeline sequence, not factual conflict. Both reported with dates. |
+| **Market share** | 21–29% depending on methodology | Range; not load-bearing for the product decision. |
 
 ### C. Author-Constructed Content
 
 The following is the author's own analysis, not reported facts about Stripe:
 
 - All three personas in [§5](#5-target-user--job) — composites from documented segments and public complaint patterns.
-- The user journey satisfaction curve in [§8](#8-user-journey) — inferred from complaint patterns, not Stripe instrumentation.
-- The root-cause hypothesis in [§10](#10-root-cause) — if an internal account-standing object exists but is not exposed, the diagnosis is correct from the merchant's perspective but wrong about the technical cause.
-- All RICE inputs in [§13](#13-prioritization), particularly the 12-person-month effort estimate — outside-in estimates, not company-internal data.
-- The implied ~0.31% net take rate — author's arithmetic on a third-party revenue estimate ($5.84B) divided by an official figure ($1.9T). Order-of-magnitude only.
-- The entire **Stripe Standing** proposal ([§14](#14-feature-proposal)–[§19](#19-rollout-plan)) — the author's invention, not a Stripe roadmap item.
+- The root-cause hypothesis in [§10](#10-root-cause) — based on publicly observable behavior; if Stripe provides more transparency than is publicly visible, this may overstate the gap.
+- All RICE inputs in [§13](#13-prioritization) — author estimates, not company-internal data.
+- The entire Merchant Account Standing proposal ([§14](#14-feature-proposal)–[§19](#19-rollout-plan)) — the author's invention, not a Stripe roadmap item.
 - All metric targets in [§17](#17-metrics--measurement) — illustrative; baselines are not disclosed.
 
 ### D. Known Weaknesses
 
-1. **Complaint data cannot support a prevalence claim.** ~540 complaints against 5M+ businesses is a very small ratio. The argument rests on severity and strategic timing, not frequency.
-2. **The authorization-rate claim is load-bearing and weakly sourced.** The 2–5pp direct-acquiring advantage is widely repeated but originates from vendor and consultancy material. Independent measurement was not located.
-3. **The pre-emptive half of the proposal rests on an unanswerable question.** Whether risk trajectory is predictive far enough in advance to make warnings actionable is knowable only inside Stripe. The experiment design (Variant C) ensures a shippable product even if the answer is no.
-4. **No primary research.** No merchant interviews, no platform-operator conversations, no usability testing, no telemetry. Everything here is desk research plus analysis.
-
-### E. Methodology
-
-Research conducted via web search on 8 August 2026. Sources: Stripe's newsroom and 2025 annual letter, tier-one business press, payments trade press, analyst comparisons, technographic trackers, and public complaint aggregations. Every financial figure was cross-checked against at least two independent sources where available. No primary-source interviews, product telemetry, or non-public documents were used.
+1. **Complaint data cannot support a prevalence claim.** The argument rests on severity and strategic timing, not frequency.
+2. **Partial defection is plausible but not measured.** The case does not depend on this being widespread.
+3. **No primary research.** No merchant interviews, no usability testing, no telemetry.
+4. **The proactive-warnings extension depends on whether risk-related signals are predictive enough to act on in advance.** This is knowable only inside Stripe, which is why it is deferred to Phase 2.
