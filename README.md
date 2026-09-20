@@ -1,7 +1,3 @@
-# Stripe — Product Management Case Study
-### Day 43 of 90 | PM Case Study Challenge
-
----
 
 ## 1. Cover
 
@@ -27,11 +23,6 @@
 
 ---
 
-## 3. Badges
-
-`Day 43/90` · `Category: Payments Infrastructure / Programmable Financial Services` · `Ownership: Private, VC-backed` · `HQ: San Francisco & Dublin` · `Status: Published`
-
----
 
 ## 4. Table of Contents
 
