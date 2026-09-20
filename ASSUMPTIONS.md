@@ -1,6 +1,6 @@
-# ASSUMPTIONS — Day 43: Stripe
+# ASSUMPTIONS
 
-**Companion to:** `README.md` — Stripe Product Management Case Study
+**Companion to:** `README.md`
 **Author:** Varun Tripathi
 **Research date:** 8 August 2026
 **Purpose:** Document what is evidenced, what is inferred, what is invented, and where sources disagree — so that a reader can independently assess how much weight any claim in the case study can bear.
@@ -194,4 +194,3 @@ In descending order of expected value:
 
 ---
 
-*Companion to `README.md` · Day 43 of 90 · PM Case Study Challenge*
